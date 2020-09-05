@@ -15,13 +15,14 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Copyright from './copyright';
+import { Redirect } from 'react-router-dom';
 
 export default function Login() {
   const classes = useStyles();
 
   const [username, changeUsername] = React.useState('');
   const [password, changePassword] = React.useState('');
-  
+  const [authenticated, changeAuthenticated] =  React.useState(false);
   
   const updateName = (event) => {
     changeUsername(event.target.value);
@@ -38,10 +39,14 @@ export default function Login() {
       console.log(data);
       axios.post("/api/classroom/login",data).then(response => {
           console.log(response);
+          localStorage.setItem('auth_token', response.data["token"]);
+          changeAuthenticated(true);
       }).catch(error => {
         console.log(error);
       })
   }
+
+  if(authenticated) return <Redirect to="/" />
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />

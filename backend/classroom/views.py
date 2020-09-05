@@ -12,7 +12,7 @@ from .models import Student, Teacher
 #     """
 #     View for logging in a user
 #     """
-    
+
 #     serializer_class = LoginSerializer
 
 #     def post(self, request, format=None):
@@ -38,10 +38,17 @@ class SignUp(generics.GenericAPIView):
         user = serializer.save()
 
         teacher = Teacher.objects.create(user=user)
-        return Response({
-            "user": UserSerializer(user).data
-        })
+        return Response({"user": UserSerializer(user).data})
 
+class UserInfo(generics.GenericAPIView):
+    """
+    Return information about the user
+    """
+    permission_classes = [IsAuthenticated] # Only requests with the auth token are processed
+
+    def get(self, request, format=None):
+        user = request.user
+        return Response({"user": UserSerializer(user).data})
 
 class StudentViewset(viewsets.ModelViewSet):
     """
@@ -51,3 +58,6 @@ class StudentViewset(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
     queryset = Student.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+

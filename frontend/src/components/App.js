@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Header } from "./header";
 import Login from "./login";
 import SignUp from "./signup";
+import Home from './home';
 
 import "../styles/App.css";
 
@@ -38,6 +39,9 @@ const App = () => {
           </Route>
           <Route path="/signup">
             <SignUp toast={{changeOpen, changeMessage, changeSeverity}}/>
+          </Route>
+          <Route path='/'>
+            <Home/>
           </Route>
         </Switch>
       </Router>
