@@ -5,14 +5,16 @@ import axios from 'axios';
 
 import "../styles/App.css";
 import ClassForm from "./classForm";
-import StudentInfo from "./student";
+import ClassInfo from "./class";
 
-export default class StudentList extends React.Component {
+import QuizForm from "./quizForm";
+
+export default class ClassList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       form: false,
-      students: [],
+      classes: [],
       auth_config: {}
     };
   }
@@ -29,9 +31,9 @@ export default class StudentList extends React.Component {
         }   
     }
     this.setState({auth_config: config});
-    axios.get("/api/classroom/student/", config).then(response => {
+    axios.get("/api/classroom/class", config).then(response => {
         console.log(response);
-        this.setState({students: response.data})
+        this.setState({classes: response.data})
     }).catch(error => {
         console.log(error);
     });
@@ -45,18 +47,16 @@ export default class StudentList extends React.Component {
 
   }
 
-  addStudent = (name, phone_number, standard) => {
+  addClass = (name, phone_number, standard) => {
       this.setState({
           form: false
       });
-      axios.post("/api/classroom/student/", {
+      axios.post("/api/classroom/class/", {
           "name": name,
-          "phone_number": phone_number,
-          "standard": standard
       }, this.state.auth_config).then(response => {
-          console.log("Student successfully created");
+          console.log("Class successfully created");
           this.setState({
-              students: [...this.state.students, response.data]
+              classes: [...this.state.classes, response.data]
           })
       }).catch(error => {
           console.log("Some error occurred");
@@ -70,16 +70,16 @@ export default class StudentList extends React.Component {
   }
 
   render() {
-    console.log(this.state.students);
+    console.log(this.state.classes);
     const form = <div></div>;
 
     return (
-      <div className="studentList">
-        <ClassForm open={this.state.form} onClose={this.onFormClose} onSubmit={this.addStudent}/>
+      <div className="classList">
+        <ClassForm open={this.state.form} onClose={this.onFormClose} onSubmit={this.addClass}/>
         <Grid container direction="column" justify="space-around" alignItems="center">
-            {this.state.students.map(student => {
+            {this.state.classes.map(class_detail => {
                 return (<Grid item>
-                    <StudentInfo student={student}/>
+                    <ClassInfo class_detail={class_detail}/>
                     </Grid>)
             })}
 

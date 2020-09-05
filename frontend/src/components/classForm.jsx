@@ -1,5 +1,11 @@
 import React from "react";
-import { Dialog, DialogTitle, Button, TextField } from "@material-ui/core";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  TextField,
+  DialogContent,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function ClassForm(props) {
@@ -20,27 +26,29 @@ export default function ClassForm(props) {
   return (
     <Dialog onClose={onClose} className={classes.dialog} open={open}>
       <DialogTitle id="simple-dialog-title">Create a new class</DialogTitle>
-      <form>
-        <TextField
-          id="outlined-basic"
-          className={classes.element}
-          value={name}
-          onChange={onNameChange}
-          label="Name"
-          fullWidth
-          variant="outlined"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.element}
-          onClick={onSubmit}
-        >
-          Create
-        </Button>
-      </form>
+      <DialogContent>
+        <form>
+          <TextField
+            id="outlined-basic"
+            className={classes.element}
+            value={name}
+            onChange={onNameChange}
+            label="Name"
+            fullWidth
+            variant="outlined"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.element}
+            onClick={onSubmit}
+          >
+            Create
+          </Button>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

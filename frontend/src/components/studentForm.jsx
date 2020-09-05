@@ -1,5 +1,11 @@
 import React from "react";
-import { Dialog, DialogTitle, Button, TextField } from "@material-ui/core";
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  TextField,
+  DialogContent,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function StudentForm(props) {
@@ -27,45 +33,47 @@ export default function StudentForm(props) {
   return (
     <Dialog onClose={onClose} className={classes.dialog} open={open}>
       <DialogTitle id="simple-dialog-title">Add a new student</DialogTitle>
-      <form>
-        <TextField
-          id="outlined-basic"
-          className={classes.element}
-          value={name}
-          onChange={onNameChange}
-          label="Name"
-          fullWidth
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-basic"
-          className={classes.element}
-          value={number}
-          fullWidth
-          onChange={onNumberChange}
-          label="Phone Number"
-          variant="outlined"
-        />
-        <TextField
-          id="outlined-basic"
-          className={classes.element}
-          value={standard}
-          fullWidth
-          onChange={onStandardChange}
-          label="Standard"
-          variant="outlined"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.element}
-          onClick={onSubmit}
-        >
-          Register
-        </Button>
-      </form>
+      <DialogContent>
+        <form>
+          <TextField
+            id="outlined-basic"
+            className={classes.element}
+            value={name}
+            onChange={onNameChange}
+            label="Name"
+            fullWidth
+            variant="outlined"
+          />
+          <TextField
+            id="outlined-basic"
+            className={classes.element}
+            value={number}
+            fullWidth
+            onChange={onNumberChange}
+            label="Phone Number"
+            variant="outlined"
+          />
+          <TextField
+            id="outlined-basic"
+            className={classes.element}
+            value={standard}
+            fullWidth
+            onChange={onStandardChange}
+            label="Standard"
+            variant="outlined"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.element}
+            onClick={onSubmit}
+          >
+            Register
+          </Button>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }
@@ -73,5 +81,6 @@ export default function StudentForm(props) {
 const useStyles = makeStyles((theme) => ({
   element: {
     margin: "2px",
+    marginTop: "6px"
   },
 }));
