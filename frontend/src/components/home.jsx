@@ -9,6 +9,8 @@ import Header from './header';
 import StudentList from './studentList';
 import ClassList from './classList';
 import ExploreClass from "./exploreClass";
+import ChoiceBox from './choiceBox';
+
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -65,6 +67,9 @@ export default class Home extends React.Component {
             <Route path={`/classes/:id`} component={ExploreClass}/>
             <Route path={`/classes`}>
                 <ClassList/>
+            </Route>
+            <Route path="/">
+              <ChoiceBox/>
             </Route>
             </Switch>
             
