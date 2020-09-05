@@ -1,0 +1,4 @@
+Django # Django for the backend server
+psycopg2-binary # Psycopg for connecting to the postgresql server
+djangorestframework
+twilio # Install twilio for sending sms 
