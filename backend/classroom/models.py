@@ -17,7 +17,7 @@ class Teacher(models.Model):
     """
     Stores information about a teacher
     """
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="teacher")
 
 class Class(models.Model):
     """
@@ -25,7 +25,7 @@ class Class(models.Model):
     """
     name = models.CharField(max_length=100)
     teacher = models.ForeignKey(to=Teacher, on_delete=models.CASCADE)
-    students = models.ManyToManyField(Student, related_name='classes', related_query_name='classes')
+    students = models.ManyToManyField(Student, related_name='classes', related_query_name='classes', null=True)
 
 class Quiz(models.Model):
     """

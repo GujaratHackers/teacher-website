@@ -8,7 +8,6 @@ import { Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
 import Header from './header';
 import StudentList from './studentList';
 import ClassList from './classList';
-
 export default class Home extends React.Component {
   constructor(props) {
     super(props);

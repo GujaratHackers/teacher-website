@@ -7,10 +7,12 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
+    margin: 30
   },
   bullet: {
     display: "inline-block",
@@ -25,26 +27,29 @@ const useStyles = makeStyles({
   },
 });
 
-
-export default function ClassInfo() {
+export default function ClassInfo(props) {
+  console.log(props);
   const classes = useStyles();
-
+  const { class_detail } = props;
   return (
-    <Card className={classes.root}>
-      <CardContent>
-<Typography className={classes.title} color="textSecondary" gutterBottom>
-  Word of the Day
-</Typography>
-<Typography className={classes.pos} color="textSecondary">
-  adjective
-</Typography>
-<Typography variant="body2" component="p">
-  well meaning and kindly.
-</Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <Link to={`/classes/${class_detail.id}`} style={{ textDecoration: "none" }}>
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            {class_detail.name}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            Number of students: {class_detail.students.length}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Enter Class</Button>
+        </CardActions>
+      </Card>
+    </Link>
   );
 }

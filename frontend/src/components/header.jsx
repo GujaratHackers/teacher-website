@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar(props) {
+  const {name} = props;
   const classes = useStyles();
   const [redirect, changeRedirect] = React.useState(false);
   const [draw, changeDraw] = React.useState(false);
@@ -50,7 +51,7 @@ export default function ButtonAppBar() {
             <MenuIcon onClick={onOption}/>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            SMS Study Platform
+            {name}
           </Typography>
           <Typography edge="end" variant="p">
               User: {username}

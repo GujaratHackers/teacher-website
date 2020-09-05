@@ -68,5 +68,10 @@
 .classList {
   width: 100%;
   height: 90vh;
-  overflow-y:scroll;
+  overflow-y:hidden;
+}
+
+.classListGrid {
+  height: 100%;
+  overflow-y: scroll;
 }

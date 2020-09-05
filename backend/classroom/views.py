@@ -39,6 +39,7 @@ class SignUp(generics.GenericAPIView):
         user = serializer.save()
 
         teacher = Teacher.objects.create(user=user)
+        teacher.save()
         return Response({"user": UserSerializer(user).data})
 
 class UserInfo(generics.GenericAPIView):
@@ -68,7 +69,9 @@ class ClassroomViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        Class.objects.filter(teacher=user.teacher)
+        teacher = Teacher.objects.get(user=user)
+        return Class.objects.filter(teacher=teacher)
+
 
     def perform_create(self, serializer):
         """
@@ -76,7 +79,8 @@ class ClassroomViewset(viewsets.ModelViewSet):
         instance from request
         """
 
-        teacher = self.request.user.teacher
+        user = self.request.user
+        teacher = Teacher.objects.get(user=user)
         serializer.save(teacher=teacher)
 
     @action(detail=True, methods = ['post'])
@@ -95,6 +99,7 @@ class ClassroomViewset(viewsets.ModelViewSet):
 
         return Response(s.data)
 
+    @action(detail=True, methods = ['post'])
     def remove_student(self, request):
         student_id = request.data['student_id']
         teacher = request.user.teacher

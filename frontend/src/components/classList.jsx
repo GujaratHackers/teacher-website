@@ -30,8 +30,9 @@ export default class ClassList extends React.Component {
             }
         }   
     }
+
     this.setState({auth_config: config});
-    axios.get("/api/classroom/class", config).then(response => {
+    axios.get("/api/classroom/class/", config).then(response => {
         console.log(response);
         this.setState({classes: response.data})
     }).catch(error => {
@@ -47,7 +48,7 @@ export default class ClassList extends React.Component {
 
   }
 
-  addClass = (name, phone_number, standard) => {
+  addClass = (name) => {
       this.setState({
           form: false
       });
@@ -76,7 +77,7 @@ export default class ClassList extends React.Component {
     return (
       <div className="classList">
         <ClassForm open={this.state.form} onClose={this.onFormClose} onSubmit={this.addClass}/>
-        <Grid container direction="column" justify="space-around" alignItems="center">
+        <Grid container direction="row" justify="start" alignItems="space-around" className="classList">
             {this.state.classes.map(class_detail => {
                 return (<Grid item>
                     <ClassInfo class_detail={class_detail}/>
