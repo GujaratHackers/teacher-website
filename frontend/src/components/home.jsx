@@ -8,6 +8,7 @@ import { Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
 import Header from './header';
 import StudentList from './studentList';
 import ClassList from './classList';
+import ExploreClass from "./exploreClass";
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -61,6 +62,7 @@ export default class Home extends React.Component {
             <Route path={`/students`}>
                 <StudentList/>
             </Route>
+            <Route path={`/classes/:id`} component={ExploreClass}/>
             <Route path={`/classes`}>
                 <ClassList/>
             </Route>

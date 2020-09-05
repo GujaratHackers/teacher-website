@@ -6,26 +6,9 @@ from rest_framework import generics, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import SignUpSerializer, UserSerializer, StudentSerializer, ClassroomSerializer
-from .models import Student, Teacher, Class
+from .serializers import SignUpSerializer, UserSerializer, StudentSerializer, ClassroomSerializer, QuizSerializer, QuizDetailSerializer
+from .models import Student, Teacher, Class, Quiz
 
-# class Login(generics.GenericAPIView):
-#     """
-#     View for logging in a user
-#     """
-
-#     serializer_class = LoginSerializer
-
-#     def post(self, request, format=None):
-#         serializer = self.get_serializer(data=request.data)
-#         user = serializer.is_valid(raise_exception=True)
-
-#         login(request, user)
-
-#         return Response("Successfully authenticated")
-
-
-# Create your views here.
 class SignUp(generics.GenericAPIView):
     """
     View for signing up a new student or teacher
@@ -116,4 +99,20 @@ class ClassroomViewset(viewsets.ModelViewSet):
         return Response(s.data)
 
   
+class QuizViewset(viewsets.ModelViewSet):
+
+    def get_serializer_class(self):
+        if self.action == 'retrive':
+            return QuizDetailSerializer
+        return QuizSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        class_id = self.request.data["class_id"]
+        class_name = Class.objects.get(id=class_id)
+        return Quiz.objects.filter(class_name=class_name)
+    
+    def perform_create(self):
+        print(self.request.data)
+        pass
 

@@ -32,8 +32,7 @@ class Quiz(models.Model):
     Store information about a quiz
     """
     name = models.CharField(max_length=100)
-    class_name = models.ForeignKey(Class, on_delete=models.CASCADE)
-    
+    class_name = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="quizzes")
 
 class StudyMaterial(models.Model):
     """
@@ -45,6 +44,7 @@ class Question(models.Model):
     """
     Store info about a question
     """
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="questions")
     detail = models.CharField(max_length=150) # Set max length as 150 characters, with additional spacing for question number
 
 class Answer(models.Model):

@@ -5,7 +5,7 @@ from django.core import exceptions
 
 from django.contrib.auth.hashers import check_password
 
-from classroom.models import Student, Class
+from classroom.models import Student, Class, Quiz, Question
 
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,7 +46,25 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         exclude = () # Include all the fields
 
+   
 class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         exclude = ("teacher", )
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        exclude = ("quiz")
+
+class QuizSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quiz
+        include = ("name","questions")
+
+class QuizDetailSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+    class Meta:
+        model = Quiz
+        exclude = ("class_name")
+
