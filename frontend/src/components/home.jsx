@@ -4,10 +4,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Paper, AppBar } from "@material-ui/core";
 
 import '../styles/App.css';
-import { Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useRouteMatch } from "react-router-dom";
 import Header from './header';
-
-import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
+import StudentList from './studentList';
+import ClassList from './classList';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -21,12 +21,19 @@ export default class Home extends React.Component {
   componentDidMount() {
     const auth_token = localStorage.getItem("auth_token")
     if (auth_token) {
-        console.log(response);
+        const config = {
+            headers:{ 
+                "Authorization": `Token ${auth_token}`
+            }
+        }
+        axios.get("/api/classroom/user",  config).then(response => {
+            console.log(response);
             localStorage.setItem("user", response.data.user.username);
             this.setState({
                 loading: false,
                 authenticated: true
             });
+        });
     }
     else {
         this.setState({
@@ -37,7 +44,8 @@ export default class Home extends React.Component {
   }
 
   render() {
-    let match = useRouteMatch();
+    let url = window.location.pathname;
+    console.log(url)
     if (this.state.loading) {
       return (
         <div className="loaderBody">
@@ -51,14 +59,14 @@ export default class Home extends React.Component {
         return <div className="mainBody">
             <Header/>
             <Switch>
-                <Route path={`${match.url}/students`}>
-
-                </Route>
-                                <Route path={`${match.url}/students`}>
-                    
-                </Route>
+            <Route path={`/students`}>
+                <StudentList/>
+            </Route>
+            <Route path={`/classes`}>
+                <ClassList/>
+            </Route>
             </Switch>
-
+            
         </div>
     }
   }
