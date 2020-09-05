@@ -43,7 +43,7 @@ export default function QuizInfo(props) {
             {quiz.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            Number of students: {quiz.questions.length}
+            Number of questions: {quiz.questions.length}
           </Typography>
         </CardContent>
         <CardActions>

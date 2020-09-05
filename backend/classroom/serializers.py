@@ -60,11 +60,13 @@ class QuestionSerializer(serializers.ModelSerializer):
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        include = ("name","questions")
+        fields = ["id", "name", "questions"]
+        read_only = ("questions")
 
 class QuizDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
     class Meta:
         model = Quiz
-        exclude = ("class_name")
+        fields = ["id", "name", "questions"]
+        read_only = ("questions")
 
