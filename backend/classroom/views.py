@@ -60,4 +60,3 @@ class StudentViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-

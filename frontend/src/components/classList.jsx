@@ -4,7 +4,7 @@ import { Add as AddIcon } from "@material-ui/icons";
 import axios from 'axios';
 
 import "../styles/App.css";
-import StudentForm from "./studentForm";
+import ClassForm from "./classForm";
 import StudentInfo from "./student";
 
 export default class StudentList extends React.Component {
@@ -75,7 +75,7 @@ export default class StudentList extends React.Component {
 
     return (
       <div className="studentList">
-        <StudentForm open={this.state.form} onClose={this.onFormClose} onSubmit={this.addStudent}/>
+        <ClassForm open={this.state.form} onClose={this.onFormClose} onSubmit={this.addStudent}/>
         <Grid container direction="column" justify="space-around" alignItems="center">
             {this.state.students.map(student => {
                 return (<Grid item>
