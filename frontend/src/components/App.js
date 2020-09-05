@@ -27,6 +27,8 @@ const App = () => {
   // const classes = useStyles();
   const [open, changeOpen] = React.useState(false);
   const [message, changeMessage] = React.useState('');
+  const [severity, changeSeverity] = React.useState('success');
+
   return (
     <>
       <Router>
@@ -35,12 +37,12 @@ const App = () => {
             <Login />
           </Route>
           <Route path="/signup">
-            <SignUp toast={{changeOpen, changeMessage}}/>
+            <SignUp toast={{changeOpen, changeMessage, changeSeverity}}/>
           </Route>
         </Switch>
       </Router>
       <Snackbar open={open} autoHideDuration={3000}>
-        <Alert severity="success">
+        <Alert severity={severity}>
         {message}
         </Alert>
       </Snackbar>

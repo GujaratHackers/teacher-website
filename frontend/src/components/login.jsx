@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +19,29 @@ import Copyright from './copyright';
 export default function Login() {
   const classes = useStyles();
 
+  const [username, changeUsername] = React.useState('');
+  const [password, changePassword] = React.useState('');
+  
+  
+  const updateName = (event) => {
+    changeUsername(event.target.value);
+  }
+  const updatePassword = (event) => {
+    changePassword(event.target.value);
+  }
+  const submitCredential = (event) => {
+      event.preventDefault();
+      const data = {
+          username,
+          password
+      };
+      console.log(data);
+      axios.post("/api/classroom/login",data).then(response => {
+          console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
+  }
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -39,6 +64,8 @@ export default function Login() {
               label="User Name"
               name="user name"
               autoFocus
+              value={username}
+              onChange={updateName}
             />
             <TextField
               variant="outlined"
@@ -50,6 +77,8 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={updatePassword}
             />
             <Button
               type="submit"
@@ -57,6 +86,7 @@ export default function Login() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={submitCredential}
             >
               Sign In
             </Button>

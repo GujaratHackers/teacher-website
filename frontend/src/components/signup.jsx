@@ -43,11 +43,20 @@ export default function SignUp(props) {
       .then((response) => {
         console.log(response);
         props.toast.changeMessage("Successfully created a teacher!");
+        props.toast.changeSeverity('success');
         props.toast.changeOpen(true);
         changeRedirect(true);
+
       })
       .catch((error) => {
         console.log(error);
+
+        props.toast.changeMessage("Error while registering, try again :(");
+        props.toast.changeOpen(true);
+        props.toast.changeSeverity('error');
+
+        changeName('');
+        changePassword('');
       });
 
   };
