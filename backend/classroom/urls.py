@@ -2,10 +2,11 @@ from django.urls import path
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
-from classroom.views import SignUp, StudentViewset, UserInfo
+from classroom.views import SignUp, ClassroomViewset, StudentViewset, UserInfo
 
 router = routers.SimpleRouter()
 router.register(r'student', StudentViewset, basename='signup')
+router.register(r'class', ClassroomViewset, basename='class')
 
 urlpatterns = [
     path('signup', SignUp.as_view()),
