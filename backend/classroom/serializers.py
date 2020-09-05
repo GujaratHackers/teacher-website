@@ -18,7 +18,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=username
         )
-        user.save()
+
         errors = dict() 
         try:
             validators.validate_password(password=password, user=User)
@@ -27,8 +27,9 @@ class SignUpSerializer(serializers.ModelSerializer):
         
         if errors:
             raise serializers.ValidationError(errors)
-
-        user.set_password(password)
+        print(str(password))
+        user.set_password(str(password))
+        user.save()
         return user
 
 
