@@ -59,7 +59,7 @@ export default function StudentInfo(props) {
           Studying in {standard}
         </Typography>
       </div>
-        <DeleteIcon color="secondary"/>
+        <DeleteIcon color="secondary" onClick={() => props.removeStudent(id)}/>
     </Paper>
   );
 }

@@ -67,7 +67,7 @@ class ClassroomViewset(viewsets.ModelViewSet):
         serializer.save(teacher=teacher)
 
     @action(detail=True, methods = ['post'])
-    def add_student(self, request):
+    def add_student(self, request, pk=None):
         student_id = request.data['student_id']
         teacher = request.user.teacher
         class_id = request.data['class_id']
@@ -83,7 +83,7 @@ class ClassroomViewset(viewsets.ModelViewSet):
         return Response(s.data)
 
     @action(detail=True, methods = ['post'])
-    def remove_student(self, request):
+    def remove_student(self, request, pk=None):
         student_id = request.data['student_id']
         teacher = request.user.teacher
         class_id = request.data['class_id']

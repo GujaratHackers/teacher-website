@@ -65,7 +65,7 @@ export default class ExploreClass extends React.Component {
         </AppBar>
         <div className="class">
             {
-                this.state.value == 0 && <UpdateStudentList class_id={this.state.id}/>
+                this.state.value == 0 && <UpdateStudentList class_id={this.state.id} students={this.state.students}/>
             }
             {
                 this.state.value == 1 && <QuizList class_id={this.state.id}/>
