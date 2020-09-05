@@ -5,6 +5,8 @@ from django.core import exceptions
 
 from django.contrib.auth.hashers import check_password
 
+from classroom.models import Student
+
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -27,8 +29,8 @@ class SignUpSerializer(serializers.ModelSerializer):
         
         if errors:
             raise serializers.ValidationError(errors)
-        print(str(password))
-        user.set_password(str(password))
+
+        user.set_password(password)
         user.save()
         return user
 
@@ -38,23 +40,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ("id", "username")
 
-# class LoginSerializer(serializers.Serializer):
-#     # username = serializers.CharField(max_length=100)
-#     # password = serializers.CharField(max_length=100)
 
-#     def is_valid(self, raise_exception=True):
-#         name = self.initial_data['username']
-#         password = self.initial_data['password']
-
-#         try:
-#             user = User.objects.get(username=name)
-#         except User.DoesNotExist:
-#             raise Exception("Authentication Failure no user found")
-        
-#         validated = check_password(password, encoded=user.password)
-#         print(validated)
-#         if validated:
-#             return user
-#         else:
-#             raise Exception("Authentication Failure")
-
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        exclude = () # Include all the fields

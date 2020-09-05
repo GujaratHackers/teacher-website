@@ -3,8 +3,10 @@ from django.contrib.auth import login
 
 from rest_framework.response import Response
 from rest_framework import generics, viewsets, permissions
+from rest_framework.permissions import IsAuthenticated
 
-from .serializers import SignUpSerializer, UserSerializer
+from .serializers import SignUpSerializer, UserSerializer, StudentSerializer
+from .models import Student, Teacher
 
 # class Login(generics.GenericAPIView):
 #     """
@@ -35,8 +37,17 @@ class SignUp(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        print(user.password)
+        teacher = Teacher.objects.create(user=user)
         return Response({
             "user": UserSerializer(user).data
         })
-    
+
+
+class StudentViewset(viewsets.ModelViewSet):
+    """
+    View all the students in the website who are registered
+    """
+
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+    permission_classes = [IsAuthenticated]

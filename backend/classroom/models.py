@@ -8,8 +8,10 @@ class Student(models.Model):
     """
     Stores information about a student
     """
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=10, null=True)
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=10)
+    standard = models.CharField(max_length=100, null=True)
+
 
 class Teacher(models.Model):
     """
