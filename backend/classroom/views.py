@@ -23,12 +23,12 @@ from .serializers import (
     QuestionSerializer,
     StudyMaterialSerializer
 )
-from .models import Student, Teacher, Class, Quiz, Question, StudyMaterial
+from .models import Student, Teacher, Class, Quiz, Question, StudyMaterial, AnswerSheet, Answer
 
 
-account_sid = "AC70e9be3234128ec3260475aab61ce889"
-auth_token = "be938c0cf8e8ce86448b265ea6331941"
-client = Client(account_sid, auth_token)
+account_sid = "AC72bf334a5108bf91e562ca51d8154e95"
+auth_token = "93b796df46556d85773b533b495c33d9"
+twilio_client = Client(account_sid, auth_token)
 
 # message = client.messages.create(
 #     body="Hello there",
@@ -37,6 +37,8 @@ client = Client(account_sid, auth_token)
 # )
 
 # print(message.sid)
+aws_client = initiate_client()
+
 class SignUp(generics.GenericAPIView):
     """
     View for signing up a new student or teacher
@@ -123,12 +125,17 @@ class ClassroomViewset(viewsets.ModelViewSet):
         # send sms CLASS>CLASS_NAME after saving student to class
         endpoint = student.phone_number
         cname = student_class.name
-        client = initiate_client()
 
-        client.publish(
-        PhoneNumber='+91'+endpoint,
-        Message='CLASS>'+cname)
 
+        # aws_client.publish(
+        # PhoneNumber='+91'+endpoint,
+        # Message='CLASS>'+cname)
+
+        twilio_client.messages.create(
+            body='CLASS>' + cname,
+            from_='+12058756630',
+            to='+91'+endpoint
+        )
         s = self.get_serializer(student_class)
 
         return Response(s.data)
@@ -174,7 +181,7 @@ class QuizViewset(viewsets.ModelViewSet):
             qobj = Question.objects.create(detail=question, quiz=instance)
             qobj.save()
         
-        client = initiate_client()
+        # client = initiate_client()
 
         registered_students = class_name.students.all()
         cname = class_name.name
@@ -191,7 +198,13 @@ class QuizViewset(viewsets.ModelViewSet):
 
             for registered_student in registered_students:
                 phno = '+91' + registered_student.phone_number
-                client.publish(PhoneNumber=phno, Message=message)
+                # aws_client.publish(PhoneNumber=phno, Message=message)
+
+                twilio_client.messages.create(
+                    body=message,
+                    from_='+12058756630',
+                    to=phno
+                )
 
 class AnswersheetViewset(viewsets.ModelViewSet):
     def get_serializer_class(self):
@@ -215,6 +228,7 @@ class StudyMaterialViewset(viewsets.ModelViewSet):
 
         study_material = instance # For creating sms messages from the instance
 
+
 @api_view(('GET', 'POST'))
 @renderer_classes((JSONRenderer,))
 def receive_sms(request):
@@ -224,20 +238,36 @@ def receive_sms(request):
     print(request.data)
     resp = MessagingResponse()
     message = request.data['Body']
-    from_number = request.data['From'][2:] # Ignore +91
-
-    student = Student.objects.get(phone_number=from_number)
+    from_number = request.data['From'][3:] # Ignore +91
+    print(from_number)
+    students = Student.objects.filter(phone_number=from_number)
+    student = students[0]
     # Need to figure out quiz id, question ids, and answers
-    quiz_name = ''
-    class_name = ''
+    parts = message.split('|')
+    quiz_name = parts[1]  # The quiz name is the second part
+    class_name = parts[0] # The class name is first part
+    answers = parts[2:] # From 2, the rest are answers
+
     try:
         quiz_instance = Quiz.objects.get(class_name__name=class_name, name=quiz_name)
     except Quiz.DoesNotExist:
-        pass
-    answers = []
+        return Response(str(resp))
+
+    questions = Question.objects.filter(quiz=quiz_instance)
+    questions.order_by('id') # Order them by the creation id
+
+    answersheet = AnswerSheet.objects.create(student=student, quiz=quiz_instance)
+    answersheet.save()
+    i=0
     for answer in answers:
-        question_id = ''
-        detail = ''
+        # question_id = ''
+        print(answer, questions[i])
+        detail = answer
+        ans_instance = Answer.objects.create(detail=detail, question=questions[i])
+        ans_instance.save()
+        answersheet.answers.add(ans_instance)
+        i = i + 1
+    answersheet.save()
     # Create an answersheet with this
 
     return Response(str(resp))
