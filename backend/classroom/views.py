@@ -9,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import SignUpSerializer, UserSerializer, StudentSerializer, ClassroomSerializer, QuizSerializer, QuizDetailSerializer
 from .models import Student, Teacher, Class, Quiz, Question
 
+from .messaging import initiate_client
+
 class SignUp(generics.GenericAPIView):
     """
     View for signing up a new student or teacher
@@ -78,6 +80,15 @@ class ClassroomViewset(viewsets.ModelViewSet):
         student_class.students.add(student)
         student_class.save()
 
+        # send sms CLASS>CLASS_NAME after saving student to class
+        endpoint = student.phone_number
+        cname = student_class.name
+        client = initiate_client()
+
+        client.publish(
+        PhoneNumber='+91'+endpoint,
+        Message='CLASS>'+cname)
+
         s = self.get_serializer(student_class)
 
         return Response(s.data)
@@ -118,4 +129,26 @@ class QuizViewset(viewsets.ModelViewSet):
         instance = serializer.save(class_name=class_name)
         for question in self.request.data["question_list"]:
             qobj = Question.objects.create(detail=question, quiz=instance)
+            qobj.save()
+
+        client = initiate_client()
+
+        registered_students = class_name.students.all()
+        cname = class_name.name
+        questions = Question.objects.filter(quiz=instance)
+        questions.order_by('id')
+
+        i = 0
+        for question in questions:
+        	i+=1
+        	quest = question.detail
+        	quiz_name = question.quiz.name
+        	message = 'QUIZ>' + cname + '|' + quiz_name + '|' + str(i) + '|' + quest
+
+        	for registered_student in registered_students:
+        		phno = '+91' + registered_student.phone_number
+        		client.publish(PhoneNumber=phno, Message=message)
+
+
+        
 
