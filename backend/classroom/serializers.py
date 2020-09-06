@@ -5,7 +5,7 @@ from django.core import exceptions
 
 from django.contrib.auth.hashers import check_password
 
-from classroom.models import Student, Class, Quiz, Question
+from classroom.models import Student, Class, Quiz, Question, Answer, AnswerSheet, StudyMaterial
 
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,7 +55,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        exclude = ("quiz")
+        fields = ["id", "detail"]
 
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,10 +63,29 @@ class QuizSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "questions"]
         read_only = ("questions")
 
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ["id", "detail", "question"]
+
+class AnswerSheetSerializer(serializers.ModelSerializer):
+    student = StudentSerializer(read_only=True)
+    answers = AnswerSerializer(many=True, read_only=True)
+    class Meta:
+        model = AnswerSheet
+        fields = ["student", "answers"]
+
 class QuizDetailSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
+    answersheets = AnswerSheetSerializer(many=True, read_only=True)
     class Meta:
         model = Quiz
-        fields = ["id", "name", "questions"]
+        fields = ["id", "name", "questions", "answersheets"]
         read_only = ("questions")
+        depth=3
 
+class StudyMaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudyMaterial
+        fields = ["id", "topic", "detail"]
+        read_only = ("class_name")

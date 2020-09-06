@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { Add } from "@material-ui/icons";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -23,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
     width: "60vw",
     minWidth: "300px",
     height: "30vh",
-    //   border: "2px solid gray",
-    //   borderRadius: 4,
     margin: 20,
     display: "flex",
     justifyContent: "space-around",
@@ -38,16 +37,16 @@ export default function ChoiceBox() {
   return (
     <div className={classes.root}>
       <Paper className={classes.choice}>
-        <Typography>Add more of your amazing students !!!</Typography>
+        <Typography variant="h5">Add more of your amazing students !!!</Typography>
         <Link to="/students/" style={{ textDecoration: "none" }}>
-          <Add fontSize="large" />
+          <Add style={{ fontSize: 80 }} />
         </Link>
       </Paper>
 
       <Paper className={classes.choice}>
-        <Typography>Explore your inspiring classes !!!</Typography>
+        <Typography variant="h5">Explore your inspiring classes !!!</Typography>
         <Link to="/classes/" style={{ textDecoration: "none" }}>
-          <Add fontSize="large" />
+          <MenuBookIcon style={{ fontSize: 80 }} />
         </Link>
       </Paper>
     </div>

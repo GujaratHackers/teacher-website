@@ -32,7 +32,7 @@ export default function QuizInfo(props) {
   const classes = useStyles();
   const { quiz } = props;
   return (
-    <Link to={`/quizzes/${quiz.id}`} style={{ textDecoration: "none" }}>
+    <Link to={`/quiz/${quiz.id}`} style={{ textDecoration: "none" }}>
       <Card className={classes.root}>
         <CardContent>
           <Typography

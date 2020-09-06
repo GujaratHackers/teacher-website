@@ -34,12 +34,6 @@ class Quiz(models.Model):
     name = models.CharField(max_length=100)
     class_name = models.ForeignKey(Class, on_delete=models.CASCADE, related_name="quizzes")
 
-class StudyMaterial(models.Model):
-    """
-    Store study material information
-    """
-    pass
-
 class Question(models.Model):
     """
     Store info about a question
@@ -60,6 +54,16 @@ class AnswerSheet(models.Model):
     """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     answers = models.ManyToManyField(Answer)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='answersheets')
+
+
+class StudyMaterial(models.Model):
+    """
+    Model to store information for a class by a teacher
+    """
+    class_name = models.ForeignKey(Class, on_delete=models.CASCADE)
+    detail = models.TextField()
+    topic = models.CharField(max_length=100)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

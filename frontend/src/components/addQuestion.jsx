@@ -94,7 +94,7 @@ export default function Question(props) {
     >
       <div style={{ width: "90%" }}>
         <Typography className={classes.title} color="textPrimary" gutterBottom>
-          {index}. {detail}
+          {index+1}. {detail}
         </Typography>
       </div>
       <DeleteIcon

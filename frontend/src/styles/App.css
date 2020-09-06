@@ -36,7 +36,9 @@
     transform: rotate(360deg);
   }
 }
-
+body {
+  background: 'gray';
+}
 .loaderBody {
   height: 100vh;
   width: 100vw;

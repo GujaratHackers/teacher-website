@@ -113,7 +113,7 @@ export default class UpdateStudentList extends React.Component {
       .then((response) => {
         console.log("Student successfully removed");
         this.setState({
-          students: response.data.students 
+          students: response.data.students // Store only the additional id here
         });
       })
       .catch((error) => {

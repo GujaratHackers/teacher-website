@@ -4,6 +4,7 @@ import { AppBar, Tabs, Tab } from "@material-ui/core";
 
 import UpdateStudentList from './updateStudentList';
 import QuizList from './quizList';
+import StudyMaterial from './studyMaterial';
 
 export default class ExploreClass extends React.Component {
   constructor(props) {
@@ -71,7 +72,7 @@ export default class ExploreClass extends React.Component {
                 this.state.value == 1 && <QuizList class_id={this.state.id}/>
             }
             {
-                this.state.value == 2 && <div/>
+                this.state.value == 2 && <StudyMaterial class_id={this.state.id}/>
             }
         </div>
       </>
