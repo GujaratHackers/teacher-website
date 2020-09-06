@@ -143,9 +143,11 @@ class ClassroomViewset(viewsets.ModelViewSet):
         # PhoneNumber='+91'+endpoint,
         # Message='CLASS>'+cname)
 
-        twilio_client.messages.create(
-            body="CLASS>" + cname, from_="+12058756630", to="+91" + endpoint
-        )
+        # twilio_client.messages.create(
+        #     body="CLASS>" + cname, from_="+12058756630", to="+91" + endpoint
+        # )
+        message = "CLASS>" + cname
+        send_message(endpoint, message)
         s = self.get_serializer(student_class)
 
         return Response(s.data)
@@ -208,9 +210,13 @@ class QuizViewset(viewsets.ModelViewSet):
             phno = "+91" + registered_student.phone_number
             # aws_client.publish(PhoneNumber=phno, Message=message)
             print(phno)
-            twilio_client.messages.create(
-                body=starter_message, from_="+12058756630", to=phno
-            )
+            try:
+                # twilio_client.messages.create(
+                #     body=starter_message, from_="+12058756630", to=phno
+                # )
+                send_message(registered_student.phone_number, starter_message)
+            except:
+                pass
 
         i = 0
         for question in questions:
@@ -218,15 +224,18 @@ class QuizViewset(viewsets.ModelViewSet):
             print(question, i)
             quest = question.detail
             quiz_name = question.quiz.name
-            message = "QUIZ>" + cname + "|" + quiz_name + "|" + str(i) + "|" + quest
+            message = "QUES>" + cname + "|" + quiz_name + "|" + str(i) + "|" + quest
 
             for registered_student in registered_students:
                 phno = "+91" + registered_student.phone_number
                 # aws_client.publish(PhoneNumber=phno, Message=message)
-
-                twilio_client.messages.create(
-                    send_messmessage, from_="+12058756630", to=phno
-                )
+                try:
+                    # twilio_client.messages.create(
+                    #     body=message, from_="+12058756630", to=phno
+                    # )
+                    send_message(registered_student.phone_number, message)
+                except:
+                    pass
 
 
 class AnswersheetViewset(viewsets.ModelViewSet):
@@ -268,7 +277,7 @@ class StudyMaterialViewset(viewsets.ModelViewSet):
         for student in class_room.students.all():
             phone_number = student.phone_number
             send_message(phone_number, file_message_header)
-        
+        file_message_header = "CONTENT>" + class_room.name + "|" + topic
         i=0
         for chunk in chunks:
             for student in class_room.students.all():
