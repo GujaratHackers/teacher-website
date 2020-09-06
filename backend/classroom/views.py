@@ -303,7 +303,7 @@ def receive_sms(request):
     parts = message.split("|")
     quiz_name = parts[1]  # The quiz name is the second part
     class_name = parts[0]  # The class name is first part
-    answers = parts[2:]  # From 2, the rest are answers
+    answers = parts[2:-1]  # From 2, the rest are answers
 
     try:
         quiz_instance = Quiz.objects.get(class_name__name=class_name, name=quiz_name)

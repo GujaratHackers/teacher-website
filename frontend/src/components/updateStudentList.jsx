@@ -172,9 +172,6 @@ export default class UpdateStudentList extends React.Component {
             );
           })}
         </Grid>
-        <Fab color="primary" aria-label="add" style={fabStyle}>
-          <AddIcon onClick={this.openForm} />
-        </Fab>
       </div>
     );
   }

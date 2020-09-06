@@ -45,6 +45,7 @@ export default function SignUp(props) {
         props.toast.changeMessage("Successfully created a teacher!");
         props.toast.changeSeverity('success');
         props.toast.changeOpen(true);
+        setTimeout(()=> props.toast.changeOpen(false), 2000);
         changeRedirect(true);
 
       })
@@ -53,6 +54,7 @@ export default function SignUp(props) {
 
         props.toast.changeMessage("Error while registering, try again :(");
         props.toast.changeOpen(true);
+        setTimeout(()=> props.toast.changeOpen(false), 2000);
         props.toast.changeSeverity('error');
 
         changeName('');

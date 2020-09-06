@@ -4,7 +4,7 @@
 
 account_sid = "AC72bf334a5108bf91e562ca51d8154e95" # Change with your twilio account id
 
-auth_token = "93b796df46556d85773b533b495c33d9" # Change with your twilio auth token
+auth_token = "891df13e81ca64091805aab9b0f86ecf" # Change with your twilio auth token
 
 twilio_number = "+12058756630" # Change with your twilio number
 
